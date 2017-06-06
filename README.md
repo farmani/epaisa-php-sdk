@@ -18,8 +18,8 @@ $ composer require eigitallabs/epaisa-php-sdk
 ## Usage
 
 ``` php
-$skeleton = new eigitallabs\epaisa-php-sdk();
-echo $skeleton->echoPhrase('Hello, League!');
+$skeleton = new eigitallabs\ePaisa(TOKEN);
+echo $skeleton->getPaymentList('Hello, League!');
 ```
 
 ## Change log
