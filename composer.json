@@ -18,6 +18,7 @@
     ],
     "require": {
         "php": "~5.6|~7.0",
+        "guzzlehttp/guzzle": "^6.2",
         "monolog/monolog": "^1.22",
         "phpseclib/phpseclib": "^2.0"
     },
@@ -32,7 +33,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "eigitallabs\\epaisa-php-sdk\\": "tests"
+            "eigitallabs\\ePaisa\\": "tests"
         }
     },
     "scripts": {
