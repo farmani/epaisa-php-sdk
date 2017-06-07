@@ -122,7 +122,6 @@ class Request
             $result = json_decode($result, true);
             if (isset($result['success']) && $result['success'] == 1) {
                 Log::update("Login operation completed successfully!");
-                return $result;
             }
             return $result;
         }
