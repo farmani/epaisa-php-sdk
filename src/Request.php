@@ -64,37 +64,10 @@ class Request
                 'timeout'  => 2.0,
                 'headers' => [
                     'Content-Type' => 'application/json',
-                    'X-Client-ID' => $client_id,
-                    'X-Access-Token' => $access_token,
                 ]
                 ]);
-            $logger = new Logger('client');
-            $logger->pushHandler(new StreamHandler('guzzle.log'));
-
-            $logAdapter = new MonologLogAdapter($logger);
-
-            $logPlugin = new LogPlugin($logAdapter, MessageFormatter::DEBUG_FORMAT);
-
-            /** @var $client Client */
-            $client = new Client("https://qrng.anu.edu.au");
-
-            $client->addSubscriber($logPlugin);
         } else {
             throw new ePaisaException('ePaisa pointer is empty!');
-        }
-    }
-
-    /**
-     * Make sure the action is valid, else throw an exception
-     *
-     * @param string $action
-     *
-     * @throws \eigitallabs\ePaisa\Exception\ePaisaException
-     */
-    private static function ensureValidAction($action)
-    {
-        if (!in_array($action, self::$actions, true)) {
-            throw new ePaisaException('The action "' . $action . '" doesn\'t exist!');
         }
     }
 
@@ -131,41 +104,30 @@ class Request
     }
 
     /**
-     * @param $email
-     * @param $password
+     * @param $rout
+     * @param $verb
+     * @param $data
      * @return bool
+     * @internal param $email
+     * @internal param $password
      */
-    private function login($email, $password)
+    public function send($rout, $verb, $data)
     {
-        $res = $this->client->request('POST', '/user/login');
-        echo $res->getStatusCode();
-        echo $res->getHeader('content-type');
-        echo $res->getBody();
-
-        $client = new Client();
-        $response = $client->createRequest()
-            ->setUrl("/user/login")
-            ->setMethod('post')
-            ->setData([
-                'clientId'      => $this->epaisa->getClientId(),
-                'requestParams' => $this->prepare(json_encode([
-                    'username' => $email,
-                    'password' => $password,
-                    'sourceId' => $this->epaisa->getSourceId(),
-                ])),
-            ])
-            ->send();
-
-        if ($response->isOk) {
-            $response->setFormat(Client::FORMAT_JSON);
-            if (isset($response->data['success']) && $response->data['success'] == 1) {
+        $response = $this->client->request(strtoupper($verb), $rout, [
+            'body' => [
+                'clientId'      => $_ENV['CLIENT_ID'],
+                'requestParams' => $this->prepare($this->epaisa->token . "####" . json_encode($data)),
+            ]
+        ]);
+        if($response->getStatusCode() == 200) {
+            $result = $response->getBody();
+            if (isset($result['success']) && $result['success'] == 1) {
                 Log::update("Login operation completed successfully!");
-                $this->setAuthKey($response->data['response']['auth_key']);
                 return true;
             }
         }
 
-        Log::error('Authentication failed.');
+        Log::error('Operation failed.');
         return false;
     }
 }

@@ -19,53 +19,53 @@ class Payment
         Log::update("Payment object initiated.");
     }
 
-    public function initiate()
+    public function initiate($options = [])
     {
-        /** TODO: initialize payment */
+        return $this->client->send('/payment/initiate', 'post', $options);
     }
 
-    public function process()
+    public function process($options = [])
     {
-        /** TODO: process payment */
+        return $this->client->send('/payment/process', 'post', $options);
     }
 
-    public function authenticate()
+    public function authenticate($options = [])
     {
-        /** TODO: authenticate payment */
+        return $this->client->send('/payment/authenticate', 'post', $options);
     }
 
-    public function update()
+    public function update($options = [])
     {
-        /** TODO: update payment */
+        return $this->client->send('/payment/update', 'post', $options);
     }
 
-    public function finalize()
+    public function finalize($options = [])
     {
-        /** TODO: finalize payment */
+        return $this->client->send('/payment/finalize', 'post', $options);
     }
 
-    public function listMethods()
+    public function listMethods($options = [])
     {
-        /** TODO: list payment */
+        return $this->client->send('/payment/list', 'post', $options);
     }
 
-    public function details()
+    public function details($options = [])
     {
-        /** TODO: details payment */
+        return $this->client->send('/payment/details', 'post', $options);
     }
 
-    public function void()
+    public function void($options = [])
     {
-        /** TODO: void payment */
+        return $this->client->send('/payment/void', 'post', $options);
     }
 
-    public function cancel()
+    public function cancel($options = [])
     {
-        /** TODO: cancel payment */
+        return $this->client->send('/payment/cancel', 'post', $options);
     }
 
-    public function receipt()
+    public function receipt($options = [])
     {
-        /** TODO: receipt payment */
+        return $this->client->send('/receipt', 'post', $options);
     }
 }

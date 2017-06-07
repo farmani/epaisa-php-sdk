@@ -25,6 +25,12 @@ class ePaisa
      * @var \eigitallabs\ePaisa\Request
      */
     protected $client = null;
+    /**
+     * ePaisa merchant token
+     *
+     * @var string
+     */
+    public $token = null;
 
     /**
      * Create a new Skeleton Instance
@@ -38,6 +44,7 @@ class ePaisa
         $dotEnv->required(['CLIENT_ID', 'CLIENT_SECRET']);
         $dotEnv->overload();
 
+        $this->token = $token;
         $this->client = new Request($this);
     }
 
