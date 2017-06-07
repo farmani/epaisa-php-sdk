@@ -114,7 +114,7 @@ class Request
     public function send($rout, $verb, $data)
     {
         $response = $this->client->request(strtoupper($verb), $rout, [
-            'body' => [
+            'form_params' => [
                 'clientId'      => $_ENV['CLIENT_ID'],
                 'requestParams' => $this->prepare($this->epaisa->token . "####" . json_encode($data)),
             ]
