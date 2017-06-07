@@ -107,7 +107,7 @@ class Request
      * @param $rout
      * @param $verb
      * @param $data
-     * @return array|\Psr\Http\Message\StreamInterface
+     * @return array
      */
     public function send($rout, $verb, $data)
     {
