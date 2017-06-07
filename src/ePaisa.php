@@ -47,10 +47,11 @@ class ePaisa
      */
     public function __construct($clientId, $secret)
     {
-        if (empty($clientId)) {
+        (new \Dotenv\Dotenv(__DIR__ . DIRECTORY_SEPARATOR . '../config/'))->load();
+        if (empty($_ENV['CLIENT_ID'])) {
             throw new ePaisaException('client id not defined!');
         }
-        if (empty($secret)) {
+        if (empty($_ENV['CLIENT_SECRET'])) {
             throw new ePaisaException('client secret not defined!');
         }
 

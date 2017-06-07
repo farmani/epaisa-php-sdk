@@ -5,6 +5,7 @@
 
 ### Added
 - Authorization Mechanism
+- Using phpdotenv to load configuration
 
 ### Changed
 - Nothing
