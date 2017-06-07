@@ -125,7 +125,7 @@ class Request
             $string = $string . chr($stringNum);
         }
 
-        $encrypted = Encrypt::encrypt($string, $this->epaisa->getSecret(), substr($this->epaisa->getClientId(), 0, 8));
+        $encrypted = Encrypt::encrypt($string, $_ENV['CLIENT_SECRET'], substr($_ENV['CLIENT_ID'], 0, 8));
 
         return strtr(base64_encode($encrypted), '+/=', '-_,');
     }

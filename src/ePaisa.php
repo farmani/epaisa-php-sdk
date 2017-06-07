@@ -20,18 +20,6 @@ class ePaisa
      */
     protected $version = '1.0.1';
     /**
-     * ePaisa client id
-     *
-     * @var string
-     */
-    protected $clientId = '';
-    /**
-     * ePaisa client secret
-     *
-     * @var string
-     */
-    protected $secret = '';
-    /**
      * ePaisa client
      *
      * @var \eigitallabs\ePaisa\Request
@@ -47,46 +35,20 @@ class ePaisa
      */
     public function __construct($clientId, $secret)
     {
-        (new \Dotenv\Dotenv(__DIR__ . DIRECTORY_SEPARATOR . '../config/'))->load();
-        if (empty($_ENV['CLIENT_ID'])) {
-            throw new ePaisaException('client id not defined!');
-        }
-        if (empty($_ENV['CLIENT_SECRET'])) {
-            throw new ePaisaException('client secret not defined!');
-        }
+        $dotEnv = new \Dotenv\Dotenv(__DIR__ . DIRECTORY_SEPARATOR . '../config/');
+        $dotEnv->required(['CLIENT_ID', 'CLIENT_SECRET']);
+        $dotEnv->overload();
 
-        $this->clientId = $clientId;
-        $this->secret = $secret;
         $this->client = new Request($this);
     }
 
-    /**
-     * get client id string
-     *
-     * @return string Returns the phrase passed in
-     */
-    public function getClientId()
+    public function createPayment()
     {
-        return $this->clientId;
+        return new Payment($this->client);
     }
 
-    /**
-     * get client secret string
-     *
-     * @return string Returns the phrase passed in
-     */
-    public function getSecret()
+    public function createProfile()
     {
-        return $this->secret;
-    }
-
-    /**
-     * get client object
-     *
-     * @return string Returns the phrase passed in
-     */
-    public function getClient()
-    {
-        return $this->client;
+        return new Profile($this->client);
     }
 }

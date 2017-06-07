@@ -9,10 +9,26 @@
 
 ## Install
 
-Via Composer
+The recommended way to install ePaisa PHP SDK is through [Composer](http://getcomposer.org/).
+
+# Install Composer
+curl -sS https://getcomposer.org/installer | php
+Next, run the Composer command to install the latest stable version of ePaisa PHP SDK:
 
 ``` bash
-$ composer require eigitallabs/epaisa-php-sdk
+$ php composer.phar require guzzlehttp/guzzle
+```
+
+After installing, you need to require Composer's autoloader:
+
+``` php
+require 'vendor/autoload.php';
+```
+
+You can then later update ePaisa PHP SDK using composer:
+
+``` bash
+$ php composer.phar update
 ```
 
 ## Usage
