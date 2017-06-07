@@ -107,9 +107,7 @@ class Request
      * @param $rout
      * @param $verb
      * @param $data
-     * @return bool
-     * @internal param $email
-     * @internal param $password
+     * @return array|\Psr\Http\Message\StreamInterface
      */
     public function send($rout, $verb, $data)
     {
@@ -123,11 +121,11 @@ class Request
             $result = $response->getBody();
             if (isset($result['success']) && $result['success'] == 1) {
                 Log::update("Login operation completed successfully!");
-                return true;
+                return $result;
             }
         }
 
         Log::error('Operation failed.');
-        return false;
+        return [];
     }
 }
