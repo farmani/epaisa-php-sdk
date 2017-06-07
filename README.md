@@ -19,9 +19,10 @@ $ composer require eigitallabs/epaisa-php-sdk
 
 ``` php
 $skeleton = new eigitallabs\ePaisa(TOKEN);
-echo $skeleton->getPaymentList('Hello, League!');
+$paymentList = $skeleton->getPaymentList();
 ```
-
+Please change TOKEN with proper value. you can get your token through ePaisa web panel.
+you can see a list of available method via [DOCUMENTATION](DOCUMENTATION.md)
 ## Change log
 
 Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
