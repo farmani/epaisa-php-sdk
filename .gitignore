@@ -13,3 +13,5 @@ composer.lock
 
 # User-specific stuff:
 .idea/
+
+.env
