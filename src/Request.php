@@ -118,11 +118,13 @@ class Request
             ]
         ]);
         if($response->getStatusCode() == 200) {
-            $result = $response->getBody();
+            $result = (string)$response->getBody();
+            $result = json_decode($result);
             if (isset($result['success']) && $result['success'] == 1) {
                 Log::update("Login operation completed successfully!");
                 return $result;
             }
+            return $result;
         }
 
         Log::error('Operation failed.');
