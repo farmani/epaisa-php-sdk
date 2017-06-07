@@ -28,12 +28,11 @@ class ePaisa
 
     /**
      * Create a new Skeleton Instance
-     * @param $clientId
-     * @param $secret
+     * @param $token
      * @throws ePaisaException
      * @internal param array $config
      */
-    public function __construct($clientId, $secret)
+    public function __construct($token)
     {
         $dotEnv = new \Dotenv\Dotenv(__DIR__ . DIRECTORY_SEPARATOR . '../config/');
         $dotEnv->required(['CLIENT_ID', 'CLIENT_SECRET']);
