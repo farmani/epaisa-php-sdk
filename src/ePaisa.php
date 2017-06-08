@@ -45,12 +45,12 @@ class ePaisa
     public function __construct($token)
     {
         $root = realpath(__DIR__ . DIRECTORY_SEPARATOR . '../');
-        $dotEnv = new \Dotenv\Dotenv($root.'config/');
+        $dotEnv = new \Dotenv\Dotenv($root.'/config');
         $dotEnv->overload();
         $dotEnv->required(['CLIENT_ID', 'CLIENT_SECRET','API_URL','SOURCE_ID']);
 
-        Log::initErrorLog($root . 'tmp/error.log');
-        Log::initDebugLog($root . 'tmp/debug.log');
+        Log::initErrorLog($root . '/tmp/error.log');
+        Log::initDebugLog($root . '/tmp/debug.log');
         $this->token = $token;
         $this->client = new Request($this);
     }
