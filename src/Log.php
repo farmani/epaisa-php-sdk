@@ -155,37 +155,6 @@ class Log
         }
     }
     /**
-     * Initialize update log
-     *
-     * Initilize monolog instance. Singleton
-     * Is possbile provide an external monolog instance
-     *
-     * @param string $path
-     *
-     * @return \Monolog\Logger
-     * @throws \eigitallabs\ePaisa\Exception\ePaisaLogException
-     * @throws \InvalidArgumentException
-     * @throws \Exception
-     */
-    public static function initUpdateLog($path)
-    {
-        if ($path === null || $path === '') {
-            throw new ePaisaLogException('Empty path for update log');
-        }
-        self::$updateLogPath = $path;
-        if (self::$monologUpdate === null) {
-            self::$monologUpdate = new Logger('bot_update_log');
-            // Create a formatter
-            $output = '%message%' . PHP_EOL;
-            $formatter = new LineFormatter($output);
-            // Update handler
-            $update_handler = new StreamHandler(self::$updateLogPath, Logger::INFO);
-            $update_handler->setFormatter($formatter);
-            self::$monologUpdate->pushHandler($update_handler);
-        }
-        return self::$monolog;
-    }
-    /**
      * Is error log active
      *
      * @return bool
@@ -202,15 +171,6 @@ class Log
     public static function isDebugLogActive()
     {
         return self::$debugLogPath !== null;
-    }
-    /**
-     * Is update log active
-     *
-     * @return bool
-     */
-    public static function isUpdateLogActive()
-    {
-        return self::$updateLogPath !== null;
     }
     /**
      * Report error log
@@ -235,35 +195,5 @@ class Log
             $text = self::getLogText($text, func_get_args());
             self::$monolog->debug($text);
         }
-    }
-    /**
-     * Report update log
-     *
-     * @param string $text
-     */
-    public static function update($text)
-    {
-        if (self::isUpdateLogActive()) {
-            $text = self::getLogText($text, func_get_args());
-            self::$monologUpdate->info($text);
-        }
-    }
-    /**
-     * Applies vsprintf to the text if placeholder replacements are passed along.
-     *
-     * @param string $text
-     * @param array  $args
-     *
-     * @return string
-     */
-    protected static function getLogText($text, array $args = [])
-    {
-        // Pop the $text off the array, as it gets passed via func_get_args().
-        array_shift($args);
-        // If no placeholders have been passed, don't parse the text.
-        if (empty($args)) {
-            return $text;
-        }
-        return vsprintf($text, $args);
     }
 }

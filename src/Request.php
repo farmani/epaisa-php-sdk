@@ -108,6 +108,7 @@ class Request
      * @param $verb
      * @param $data
      * @return array
+     * @throws ePaisaException
      */
     public function send($rout, $verb, $data)
     {
@@ -121,12 +122,13 @@ class Request
             $result = (string)$response->getBody();
             $result = json_decode($result, true);
             if (isset($result['success']) && $result['success'] == 1) {
-                Log::update("Login operation completed successfully!");
+                Log::debug("Login operation completed successfully!");
             }
+            Log::error($response->getBody()->getContents());
             return $result;
         }
 
-        Log::error('Operation failed.');
-        return [];
+        Log::error($response->getBody()->getContents());
+        throw new ePaisaException('Sending request failed with ' . $response->getStatusCode() . ' status code.');
     }
 }

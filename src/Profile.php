@@ -16,7 +16,7 @@ class Profile
     public function __construct(Request $client)
     {
         $this->client = $client;
-        Log::update("Profile object initiated.");
+        Log::debug("Profile object initiated.");
     }
 
 }

@@ -44,6 +44,8 @@ class ePaisa
         $dotEnv->overload();
         $dotEnv->required(['CLIENT_ID', 'CLIENT_SECRET','API_URL','SOURCE_ID']);
 
+        Log::initErrorLog(__DIR__ . DIRECTORY_SEPARATOR . '../tmp/');
+        Log::initDebugLog(__DIR__ . DIRECTORY_SEPARATOR . '../tmp/');
         $this->token = $token;
         $this->client = new Request($this);
     }

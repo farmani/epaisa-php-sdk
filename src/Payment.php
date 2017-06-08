@@ -16,7 +16,7 @@ class Payment
     public function __construct(Request $client)
     {
         $this->client = $client;
-        Log::update("Payment object initiated.");
+        Log::debug("Payment object initiated.");
     }
 
     public function initiate($options = [])
