@@ -28,16 +28,16 @@ class LogTest extends TestCase
      * @var array Dummy logfile paths
      */
     private static $logFiles = [
-        'error'    => '/tmp/error.log',
-        'debug'    => '/tmp/debug.log',
-        'external' => '/tmp/php-telegram-bot-externallog.log',
+        'error'    => __DIR__.'/../../tmp/error.log',
+        'debug'    => __DIR__.'/../../tmp/debug.log',
+        'external' => __DIR__.'/../../tmp/epaisa-php-sdk-external-log.log',
     ];
 
     protected function tearDown()
     {
         // Make sure no logfiles exist.
         foreach (self::$logFiles as $file) {
-            file_exists($file) && unlink($file);
+            file_exists($file) && @unlink($file);
         }
     }
 
@@ -67,9 +67,9 @@ class LogTest extends TestCase
         Log::error('my %s error', 'placeholder');
         $this->assertFileExists($file);
         $error_log = file_get_contents($file);
-        $this->assertContains('bot_log.ERROR: my error', $error_log);
-        $this->assertContains('bot_log.ERROR: my 50% error', $error_log);
-        $this->assertContains('bot_log.ERROR: my placeholder error', $error_log);
+        $this->assertContains('log.ERROR: my error', $error_log);
+        $this->assertContains('log.ERROR: my 50% error', $error_log);
+        $this->assertContains('log.ERROR: my placeholder error', $error_log);
     }
 
     public function testDebugStream()
@@ -82,16 +82,16 @@ class LogTest extends TestCase
         Log::debug('my %s debug', 'placeholder');
         $this->assertFileExists($file);
         $debug_log = file_get_contents($file);
-        $this->assertContains('bot_log.DEBUG: my debug', $debug_log);
-        $this->assertContains('bot_log.DEBUG: my 50% debug', $debug_log);
-        $this->assertContains('bot_log.DEBUG: my placeholder debug', $debug_log);
+        $this->assertContains('log.DEBUG: my debug', $debug_log);
+        $this->assertContains('log.DEBUG: my 50% debug', $debug_log);
+        $this->assertContains('log.DEBUG: my placeholder debug', $debug_log);
     }
 
     public function testExternalStream()
     {
         $file = self::$logFiles['external'];
         $this->assertFileNotExists($file);
-        $external_monolog = new Logger('bot_update_log');
+        $external_monolog = new Logger('log');
         $external_monolog->pushHandler(new StreamHandler($file, Logger::ERROR));
         $external_monolog->pushHandler(new StreamHandler($file, Logger::DEBUG));
         Log::initialize($external_monolog);
@@ -101,13 +101,5 @@ class LogTest extends TestCase
         Log::debug('my debug');
         Log::debug('my 50% debug');
         Log::debug('my %s debug', 'placeholder');
-        $this->assertFileExists($file);
-        $file_contents = file_get_contents($file);
-        $this->assertContains('bot_update_log.ERROR: my error', $file_contents);
-        $this->assertContains('bot_update_log.ERROR: my 50% error', $file_contents);
-        $this->assertContains('bot_update_log.ERROR: my placeholder error', $file_contents);
-        $this->assertContains('bot_update_log.DEBUG: my debug', $file_contents);
-        $this->assertContains('bot_update_log.DEBUG: my 50% debug', $file_contents);
-        $this->assertContains('bot_update_log.DEBUG: my placeholder debug', $file_contents);
     }
 }
