@@ -38,7 +38,7 @@ $ php composer.phar update
 
 ``` php
 try {
-    $ePaisa = new \eigitallabs\ePaisa\ePaisa('xq6UN8XsFebBH4UPD-7MD4OAzZ8ZdupLPcOU4xn8gfvvta5SPa4ui8lf4L6mlJ90');
+    $ePaisa = new \eigitallabs\ePaisa\ePaisa('TOKEN');
     $payment = $ePaisa->createPayment();
     $list = $payment->listPayments();
     print_r($list);
