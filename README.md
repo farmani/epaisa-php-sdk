@@ -37,11 +37,18 @@ $ php composer.phar update
 ## Usage
 
 ``` php
-$skeleton = new eigitallabs\ePaisa(TOKEN);
-$paymentList = $skeleton->getPaymentList();
+try {
+    $ePaisa = new \eigitallabs\ePaisa\ePaisa('xq6UN8XsFebBH4UPD-7MD4OAzZ8ZdupLPcOU4xn8gfvvta5SPa4ui8lf4L6mlJ90');
+    $payment = $ePaisa->createPayment();
+    $list = $payment->listPayments();
+    print_r($list);
+} catch (\eigitallabs\ePaisa\Exception\ePaisaException $ex) {
+    echo $ex->getMessage();
+}
 ```
 Please change TOKEN with proper value. you can get your token through ePaisa web panel.
 you can see a list of available method via [DOCUMENTATION](DOCUMENTATION.md)
+
 ## Change log
 
 Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.

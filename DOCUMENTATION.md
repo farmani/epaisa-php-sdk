@@ -1,17 +1,10 @@
 # ePaisa PHP SDK Documents
 
-## Install
+## General Topics
+* [Install library](doc/INSTALL.md)
+* [Basic Usage](doc/BASIC.md)
+* [Logging system](doc/LOG.md)
 
-Via Composer
+## API
 
-``` bash
-$ composer require eigitallabs/epaisa-php-sdk
-```
-
-## Basic Usage
-
-``` php
-$skeleton = new eigitallabs\ePaisa(TOKEN);
-$paymentList = $skeleton->getPaymentList();
-```
-Please change TOKEN with proper value. you can get your token through ePaisa web panel.
+- [Payment](doc/PAYMENT.md)

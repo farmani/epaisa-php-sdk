@@ -44,7 +44,7 @@ class Payment
         return $this->client->send('/payment/finalize', 'post', $options);
     }
 
-    public function listMethods($options = [])
+    public function listPayments($options = [])
     {
         return $this->client->send('/payment/list', 'post', $options);
     }

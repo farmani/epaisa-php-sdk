@@ -11,6 +11,10 @@ namespace eigitallabs\ePaisa;
 
 use eigitallabs\ePaisa\Exception\ePaisaException;
 
+/**
+ * Class ePaisa
+ * @package eigitallabs\ePaisa
+ */
 class ePaisa
 {
     /**
@@ -51,11 +55,21 @@ class ePaisa
         $this->client = new Request($this);
     }
 
+    /**
+     * Get an instance of Payment object
+     *
+     * @return Payment
+     */
     public function createPayment()
     {
         return new Payment($this->client);
     }
 
+    /**
+     * Get an instance of Profile object
+     *
+     * @return Profile
+     */
     public function createProfile()
     {
         return new Profile($this->client);
