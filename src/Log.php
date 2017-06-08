@@ -196,4 +196,23 @@ class Log
             self::$monolog->debug($text);
         }
     }
+
+    /**
+     * Applies vsprintf to the text if placeholder replacements are passed along.
+     *
+     * @param string $text
+     * @param array  $args
+     *
+     * @return string
+     */
+    protected static function getLogText($text, array $args = [])
+    {
+        // Pop the $text off the array, as it gets passed via func_get_args().
+        array_shift($args);
+        // If no placeholders have been passed, don't parse the text.
+        if (empty($args)) {
+            return $text;
+        }
+        return vsprintf($text, $args);
+    }
 }
