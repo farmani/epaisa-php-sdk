@@ -120,15 +120,22 @@ class Request
         ]);
         if($response->getStatusCode() == 200) {
             $result = (string)$response->getBody();
-            $result = json_decode($result, true);
-            if (isset($result['success']) && $result['success'] == 1) {
-                Log::debug("Login operation completed successfully!");
+            $resultArray = json_decode($result, true);
+            if(!empty($resultArray)) {
+                if (isset($resultArray['success']) && $resultArray['success'] == 1) {
+                    Log::debug("Operation completed successfully!");
+                    return $resultArray;
+                } else {
+                    Log::debug("Operation failed!");
+                    return $resultArray;
+                }
+            } else {
+                Log::error((string)$response->getBody());
+                throw new ePaisaException((string)$response->getBody());
             }
-            Log::error($response->getBody()->getContents());
-            return $result;
         }
 
-        Log::error($response->getBody()->getContents());
+        Log::error((string)$response->getBody());
         throw new ePaisaException('Sending request failed with ' . $response->getStatusCode() . ' status code.');
     }
 }
