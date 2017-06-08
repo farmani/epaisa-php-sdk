@@ -45,7 +45,7 @@ class ePaisa
     public function __construct($token)
     {
         $root = realpath(__DIR__ . DIRECTORY_SEPARATOR . '../');
-        $dotEnv = new \Dotenv\Dotenv($root.'config');
+        $dotEnv = new \Dotenv\Dotenv($root.'config/');
         $dotEnv->overload();
         $dotEnv->required(['CLIENT_ID', 'CLIENT_SECRET','API_URL','SOURCE_ID']);
 
