@@ -10,6 +10,8 @@
 
 namespace eigitallabs\ePaisa;
 
+use Cache\Adapter\PHPArray\ArrayCachePool;
+use Cache\SessionHandler\Psr6SessionHandler;
 use eigitallabs\ePaisa\Exception\ePaisaException;
 use GuzzleHttp\Client;
 use GuzzleHttp\Handler\StreamHandler;
@@ -23,12 +25,6 @@ class Request
      * @var \eigitallabs\ePaisa\ePaisa
      */
     private $epaisa;
-    /**
-     * URI of the ePaisa API
-     *
-     * @var string
-     */
-    private $apiBaseUri = 'https://halil.epaisa.com';
     /**
      * Guzzle Client object
      *
@@ -60,31 +56,21 @@ class Request
         if (is_object($epaisa)) {
             $this->epaisa = $epaisa;
             $this->client = new Client([
-                'base_uri' => $this->apiBaseUri,
-                'timeout'  => 2.0,
+                'base_uri' => $_ENV['API_URL'],
+                'timeout'  => 10,
                 'headers' => [
                     'Content-Type' => 'application/json',
                 ]
                 ]);
+
+            define('SESSION_ENC_KEY', 'def00000c196c56c35c837c8ac30d976e2f1b5008a07cfa583452b59e8ec54120a896e642a21cf');
+            $session = new SessionHandler(SESSION_ENC_KEY);
+            session_set_save_handler($session, true);
+            $session->sessionStart();
         } else {
             throw new ePaisaException('ePaisa pointer is empty!');
         }
     }
-
-    /**
-     * Make sure the data isn't empty, else throw an exception
-     *
-     * @param array $data
-     *
-     * @throws \eigitallabs\ePaisa\Exception\ePaisaException
-     */
-    private static function ensureNonEmptyData(array $data)
-    {
-        if (count($data) === 0) {
-            throw new ePaisaException('Data is empty!');
-        }
-    }
-
 
     /**
      * @param $string
@@ -115,7 +101,7 @@ class Request
         $response = $this->client->request(strtoupper($verb), $rout, [
             'form_params' => [
                 'clientId'      => $_ENV['CLIENT_ID'],
-                'requestParams' => $this->prepare($this->epaisa->token . "####" . json_encode($data)),
+                'requestParams' => $this->prepare($this->getAuthKey() . "####" . json_encode($data)),
             ]
         ]);
         if($response->getStatusCode() == 200) {
@@ -137,5 +123,85 @@ class Request
 
         Log::error((string)$response->getBody());
         throw new ePaisaException('Sending request failed with ' . $response->getStatusCode() . ' status code.');
+    }
+
+    /**
+     * @param $rout
+     * @param $verb
+     * @param $data
+     * @return array
+     * @throws ePaisaException
+     */
+    public function sendOld($rout, $verb, $data)
+    {
+        $response = $this->client->request(strtoupper($verb), $rout, [
+            'form_params' => [
+                'clientId'      => $_ENV['CLIENT_ID'],
+                'requestParams' => $this->prepare($this->getAuthKey() . "####" . implode('####',$data)),
+            ]
+        ]);
+        if($response->getStatusCode() == 200) {
+            $result = (string)$response->getBody();
+            $resultArray = json_decode($result, true);
+            if(!empty($resultArray)) {
+                if (isset($resultArray['success']) && $resultArray['success'] == 1) {
+                    Log::debug("Operation completed successfully!");
+                    return $resultArray;
+                } else {
+                    Log::debug("Operation failed!");
+                    return $resultArray;
+                }
+            } else {
+                Log::error((string)$response->getBody());
+                throw new ePaisaException((string)$response->getBody());
+            }
+        }
+
+        Log::error((string)$response->getBody());
+        throw new ePaisaException('Sending request failed with ' . $response->getStatusCode() . ' status code.');
+    }
+
+
+    /**
+     * @return array
+     * @throws ePaisaException
+     */
+    public function login()
+    {
+
+        $response = $this->client->request('POST', '/user/loginWithToken', [
+            'form_params' => [
+                'clientId'      => $_ENV['CLIENT_ID'],
+                'requestParams' => $this->prepare($this->epaisa->token),
+            ]
+        ]);
+        if($response->getStatusCode() == 200) {
+            $result = (string)$response->getBody();
+            $resultArray = json_decode($result, true);
+            if(!empty($resultArray)) {
+                if (isset($resultArray['success']) && $resultArray['success'] == 1) {
+                    Log::debug("Login completed successfully!");
+                    $_SESSION['authKey'] = $resultArray['response']['auth_key'];
+                    $_SESSION['authKey_created_at'] = $resultArray['response']['auth_key_creationtime'];
+                    return $resultArray['response']['auth_key'];
+                }
+            } else {
+                Log::error((string)$response->getBody());
+                throw new ePaisaException((string)$response->getBody());
+            }
+        }
+
+        Log::error((string)$response->getBody());
+        throw new ePaisaException('Sending request failed with ' . $response->getStatusCode() . ' status code.');
+    }
+
+    protected function getAuthKey() {
+        if(empty($_SESSION['authKey'])) {
+            $authKey = $this->login();
+        } else {
+            $authKey = $_SESSION['authKey'];
+        }
+
+        return $authKey;
     }
 }

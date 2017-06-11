@@ -42,7 +42,7 @@ class LogTest extends TestCase
     }
 
     /**
-     * @expectedException ePaisaLogException
+     * @expectedException \eigitallabs\ePaisa\Exception\ePaisaLogException
      */
     public function testNewInstanceWithoutErrorPath()
     {
@@ -50,7 +50,7 @@ class LogTest extends TestCase
     }
 
     /**
-     * @expectedException ePaisaLogException
+     * @expectedException \eigitallabs\ePaisa\Exception\ePaisaLogException
      */
     public function testNewInstanceWithoutDebugPath()
     {
