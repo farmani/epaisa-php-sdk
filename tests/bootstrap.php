@@ -16,6 +16,7 @@ error_reporting(-1);
  */
 date_default_timezone_set('UTC');
 $autoloader = __DIR__ . '/../vendor/autoload.php';
+
 /*
  * Check that composer installation was done.
  */

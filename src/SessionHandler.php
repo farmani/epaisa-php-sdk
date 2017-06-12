@@ -171,6 +171,7 @@ class SessionHandler extends \SessionHandler
             }
         }
         $_SESSION = [];
+        
         session_destroy();
         session_start();
     }

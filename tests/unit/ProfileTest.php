@@ -30,9 +30,11 @@ class ProfileTest extends TestCase
      */
     private $payment;
 
+    private $paymentId = '';
+
     public function setUp()
     {
-        $ePaisa = new \eigitallabs\ePaisa\ePaisa('sFCz2mrgOpUwltKsQf0EUhlsf-_O2g9vo_Mvt-GFG3ArSFMAcTt2gteyXg92T9g7');
+        $ePaisa = new \eigitallabs\ePaisa\ePaisa('amIKosAwiwIYatIb4rAg56iDo4eBayO5Axac8MerEh1Wa51fiCuRa34Fajotef2Y5buGajASEwI1O5iRIvajEkaY34inuHeRenIgawA3uXOhiMArAbAfIl2BIjI3OVoD');
         $this->payment = $ePaisa->createPayment();
     }
 
@@ -81,6 +83,9 @@ class ProfileTest extends TestCase
   }
 }', true);
         $result = $this->payment->initiate($options);
+        if(isset($result['paymentId'])) {
+            $this->paymentId = $result['paymentId'];
+        }
         $this->assertArrayHasKey('success', $result, "Unexpected response from server!");
         $this->assertEquals(1, $result['success'], $result['message']);
     }
@@ -95,7 +100,7 @@ class ProfileTest extends TestCase
     public function testProcess()
     {
         $result = $this->payment->process([
-            'paymentId'             => '7313',
+            'paymentId'             => $this->paymentId,
             'transactionTypeId'     => '',
             'transactionCurrencyId' => '',
             'transactionAmount'     => '',
@@ -109,19 +114,6 @@ class ProfileTest extends TestCase
     public function testListPayments()
     {
         $result = $this->payment->listPayments([
-            'fromDate' => '',
-            'toDate' => '',
-            'merchantId' => '',
-            'userId' => '',
-            'sourceId' => '',
-            'paymentId' => '',
-            'paymentStatusId' => '',
-            'offset' => '',
-            'limit' => '',
-            'amountFrom' => '',
-            'amountTo' => '',
-            'transactionId' => '',
-            'transactionTypeId' => '',
             'include' => ['transactions','history','transactions_history','orders'],
         ]);
         $this->assertArrayHasKey('success', $result, "Unexpected response from server!");

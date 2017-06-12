@@ -10,12 +10,8 @@
 
 namespace eigitallabs\ePaisa;
 
-use Cache\Adapter\PHPArray\ArrayCachePool;
-use Cache\SessionHandler\Psr6SessionHandler;
 use eigitallabs\ePaisa\Exception\ePaisaException;
 use GuzzleHttp\Client;
-use GuzzleHttp\Handler\StreamHandler;
-use Monolog\Logger;
 
 class Request
 {
@@ -62,11 +58,10 @@ class Request
                     'Content-Type' => 'application/json',
                 ]
                 ]);
-
-            define('SESSION_ENC_KEY', 'def00000c196c56c35c837c8ac30d976e2f1b5008a07cfa583452b59e8ec54120a896e642a21cf');
-            $session = new SessionHandler(SESSION_ENC_KEY);
-            session_set_save_handler($session, true);
-            $session->sessionStart();
+            defined('SESSION_ENC_KEY') or define('SESSION_ENC_KEY', 'def00000c196c56c35c837c8ac30d976e2f1b5008a07cfa583452b59e8ec54120a896e642a21cf');
+            //$session = new SessionHandler(SESSION_ENC_KEY);
+            //session_set_save_handler($session, true);
+            //$session->sessionStart();
         } else {
             throw new ePaisaException('ePaisa pointer is empty!');
         }
@@ -169,10 +164,10 @@ class Request
     public function login()
     {
 
-        $response = $this->client->request('POST', '/user/loginWithToken', [
+        $response = $this->client->request('POST', '/user/login-with-token', [
             'form_params' => [
                 'clientId'      => $_ENV['CLIENT_ID'],
-                'requestParams' => $this->prepare($this->epaisa->token),
+                'requestParams' => $this->prepare(json_encode(['token'=>$this->epaisa->token])),
             ]
         ]);
         if($response->getStatusCode() == 200) {
