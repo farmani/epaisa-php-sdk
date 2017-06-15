@@ -15,6 +15,7 @@ error_reporting(-1);
  * Set UTC timezone.
  */
 date_default_timezone_set('UTC');
+$_SERVER['REMOTE_ADDR'] = '127.0.0.1';
 $autoloader = __DIR__ . '/../vendor/autoload.php';
 
 /*

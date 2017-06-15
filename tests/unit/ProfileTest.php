@@ -10,12 +10,6 @@
 
 namespace eigitallabs\ePaisa\Tests\Unit;
 
-use eigitallabs\ePaisa\Exception\ePaisaLogException;
-use eigitallabs\ePaisa\Log;
-use eigitallabs\ePaisa\Payment;
-use Monolog\Handler\StreamHandler;
-use Monolog\Logger;
-
 /**
  * @package         ePaisaTest
  * @author          Ramin Farmani <ramin.farmani@eigital.com>
@@ -26,139 +20,37 @@ use Monolog\Logger;
 class ProfileTest extends TestCase
 {
     /**
-     * @var \eigitallabs\ePaisa\Payment
+     * @var \eigitallabs\ePaisa\Profile
      */
-    private $payment;
-
-    private $paymentId = '';
+    private $profile;
 
     public function setUp()
     {
-        $ePaisa = new \eigitallabs\ePaisa\ePaisa('amIKosAwiwIYatIb4rAg56iDo4eBayO5Axac8MerEh1Wa51fiCuRa34Fajotef2Y5buGajASEwI1O5iRIvajEkaY34inuHeRenIgawA3uXOhiMArAbAfIl2BIjI3OVoD');
-        $this->payment = $ePaisa->createPayment();
+        $ePaisa = new \eigitallabs\ePaisa\ePaisa('PaYt4SZfu4bDAq6h4MHdqACJ8ifCDjjTXRAR4yMhKm2iuzszxKUwBhYV7Lwmb5b01s4xmFGRCnttOgtzoiQFQ51ZAwcgIEsoOWRbQOGRbZr0cxflnNwUKuQ2U7DNskDb');
+        $this->profile = $ePaisa->createProfile();
     }
 
     public function tearDown()
     {
-        $this->payment = null;
+        $this->profile = null;
     }
 
-    public function testInitiate()
+    public function testView()
     {
-        $options = json_decode('{
-  "paymentCurrencyId": 25,
-  "paymentAmount": "100.00",
-  "paymentTipAmount": 0,
-  "paymentSubTotal": 0,
-  "paymentTotalDiscount": 0,
-  "paymentCustomerId": "",
-  "location": "19.0636695,72.8338119,",
-  "customerId": 1,
-  "customFieldArray": [
-    {
-      "fieldName": "Doctor Id",
-      "fieldValue": "76543"
-    }
-  ],
-  "order": {
-    "customItems": [
-      {
-        "name": "cellphone",
-        "unitPrice": "40.00",
-        "quantity": "3",
-        "calculatedPrice": "120.00",
-        "discount": "10.00",
-        "calculatedDiscount": "36.00",
-        "basePrice": "1200 / 5"
-      }
-    ],
-    "subTotal": "568.00",
-    "totalPrice": "580.00",
-    "totalTax": "0",
-    "totalDiscount": "10",
-    "generalDiscount": "general discount applied to cart",
-    "roundOffAmount": "amount thats rounded if enabled",
-    "serviceCharges": "10.00",
-    "deliveryCharges": "50.00"
-  }
-}', true);
-        $result = $this->payment->initiate($options);
-        if(isset($result['paymentId'])) {
-            $this->paymentId = $result['paymentId'];
-        }
-        $this->assertArrayHasKey('success', $result, "Unexpected response from server!");
-        $this->assertEquals(1, $result['success'], $result['message']);
-    }
-
-    public function testFinalize()
-    {
-        $result = $this->payment->finalize(['paymentId' => '7313']);
-        $this->assertArrayHasKey('success', $result, "Unexpected response from server!");
-        $this->assertEquals(1, $result['success'], $result['message']);
-    }
-
-    public function testProcess()
-    {
-        $result = $this->payment->process([
-            'paymentId'             => $this->paymentId,
-            'transactionTypeId'     => '',
-            'transactionCurrencyId' => '',
-            'transactionAmount'     => '',
-            'mobileNumber'          => '',
-            'additional'            => '',
+        $result = $this->profile->view([
+            'userId' => 459,
         ]);
         $this->assertArrayHasKey('success', $result, "Unexpected response from server!");
-        $this->assertEquals(1, $result['success'], $result['message']);
-    }
-
-    public function testListPayments()
-    {
-        $result = $this->payment->listPayments([
-            'include' => ['transactions','history','transactions_history','orders'],
-        ]);
-        $this->assertArrayHasKey('success', $result, "Unexpected response from server!");
-        $this->assertEquals(1, $result['success'], $result['message']);
-    }
-
-    public function testCancel()
-    {
-        $result = $this->payment->cancel();
-        $this->assertArrayHasKey('success', $result, "Unexpected response from server!");
-        $this->assertEquals(1, $result['success'], $result['message']);
-    }
-
-    public function testReceipt()
-    {
-        $result = $this->payment->receipt();
-        $this->assertArrayHasKey('success', $result, "Unexpected response from server!");
-        $this->assertEquals(1, $result['success'], $result['message']);
-    }
-
-    public function testDetails()
-    {
-        $result = $this->payment->details();
-        $this->assertArrayHasKey('success', $result, "Unexpected response from server!");
-        $this->assertEquals(1, $result['success'], $result['message']);
-    }
-
-    public function testVoid()
-    {
-        $result = $this->payment->void();
-        $this->assertArrayHasKey('success', $result, "Unexpected response from server!");
-        $this->assertEquals(1, $result['success'], $result['message']);
-    }
-
-    public function testAuthenticate()
-    {
-        $result = $this->payment->authenticate();
-        $this->assertArrayHasKey('success', $result, "Unexpected response from server!");
-        $this->assertEquals(1, $result['success'], $result['message']);
+        $this->assertEquals(1, $result['success'], json_encode($result));
     }
 
     public function testUpdate()
     {
-        $result = $this->payment->update();
+        $result = $this->profile->update([
+            'userFirstName' => 'strange',
+        ]);
         $this->assertArrayHasKey('success', $result, "Unexpected response from server!");
-        $this->assertEquals(1, $result['success'], $result['message']);
+        $this->assertEquals(1, $result['success'], json_encode($result));
     }
+
 }

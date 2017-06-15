@@ -59,9 +59,9 @@ class Request
                 ]
                 ]);
             defined('SESSION_ENC_KEY') or define('SESSION_ENC_KEY', 'def00000c196c56c35c837c8ac30d976e2f1b5008a07cfa583452b59e8ec54120a896e642a21cf');
-            //$session = new SessionHandler(SESSION_ENC_KEY);
-            //session_set_save_handler($session, true);
-            //$session->sessionStart();
+            $session = new SessionHandler(SESSION_ENC_KEY);
+            session_set_save_handler($session, true);
+            $session->sessionStart();
         } else {
             throw new ePaisaException('ePaisa pointer is empty!');
         }
@@ -92,6 +92,53 @@ class Request
      * @throws ePaisaException
      */
     public function send($rout, $verb, $data)
+    {
+        return (strtoupper($verb) === 'GET')?$this->sendGet($rout, $data):$this->sendPost($rout, $verb, $data);
+    }
+
+    /**
+     * @param $rout
+     * @param $data
+     * @return array
+     * @throws ePaisaException
+     */
+    public function sendGet($rout, $data)
+    {
+        $response = $this->client->request('GET', $rout, [
+            'query' => [
+                'clientId'      => $_ENV['CLIENT_ID'],
+                'requestParams' => $this->prepare($this->getAuthKey() . "####" . json_encode($data)),
+            ]
+        ]);
+        if($response->getStatusCode() == 200) {
+            $result = (string)$response->getBody();
+            $resultArray = json_decode($result, true);
+            if(!empty($resultArray)) {
+                if (isset($resultArray['success']) && $resultArray['success'] == 1) {
+                    Log::debug("Operation completed successfully!");
+                    return $resultArray;
+                } else {
+                    Log::debug("Operation failed!");
+                    return $resultArray;
+                }
+            } else {
+                Log::error((string)$response->getBody());
+                throw new ePaisaException((string)$response->getBody());
+            }
+        }
+
+        Log::error((string)$response->getBody());
+        throw new ePaisaException('Sending request failed with ' . $response->getStatusCode() . ' status code.');
+    }
+
+    /**
+     * @param $rout
+     * @param $verb
+     * @param $data
+     * @return array
+     * @throws ePaisaException
+     */
+    public function sendPost($rout, $verb, $data)
     {
         $response = $this->client->request(strtoupper($verb), $rout, [
             'form_params' => [

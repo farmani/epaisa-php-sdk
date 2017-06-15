@@ -1,4 +1,5 @@
 <?php
+
 namespace eigitallabs\ePaisa;
 
 /**
@@ -65,8 +66,8 @@ class SessionHandler extends \SessionHandler
             if (!self::preventHijacking()) {
                 // Reset session data and regenerate id
                 $_SESSION = [];
-                $_SESSION['ipAddress'] = $_SERVER['REMOTE_ADDR'];
-                $_SESSION['userAgent'] = $_SERVER['HTTP_USER_AGENT'];
+                $_SESSION['ipAddress'] = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '127.0.0.1';
+                $_SESSION['userAgent'] = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : 'CLI';
                 self::regenerateSession();
 
                 // Give a 5% chance of the session id changing on any request
@@ -148,11 +149,11 @@ class SessionHandler extends \SessionHandler
             return false;
         }
 
-        if ($_SESSION['ipAddress'] != $_SERVER['REMOTE_ADDR']) {
+        if (isset($_SERVER['REMOTE_ADDR']) && $_SESSION['ipAddress'] != $_SERVER['REMOTE_ADDR']) {
             return false;
         }
 
-        if ($_SESSION['userAgent'] != $_SERVER['HTTP_USER_AGENT']) {
+        if (isset($_SERVER['HTTP_USER_AGENT']) && $_SESSION['userAgent'] != $_SERVER['HTTP_USER_AGENT']) {
             return false;
         }
 
@@ -171,7 +172,7 @@ class SessionHandler extends \SessionHandler
             }
         }
         $_SESSION = [];
-        
+
         session_destroy();
         session_start();
     }
