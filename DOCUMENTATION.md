@@ -8,3 +8,5 @@
 ## API
 
 - [Payment](doc/PAYMENT.md)
+- [User](doc/USER.md)
+- [Partner](doc/PARTNER.md)
