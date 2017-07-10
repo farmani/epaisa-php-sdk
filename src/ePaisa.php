@@ -74,4 +74,24 @@ class ePaisa
     {
         return new Profile($this->client);
     }
+
+    /**
+     * Get an instance of User object
+     *
+     * @return User
+     */
+    public function createUser()
+    {
+        return new User($this->client);
+    }
+
+    /**
+     * Get an instance of Partner object
+     *
+     * @return Partner
+     */
+    public function createPartner()
+    {
+        return new Partner($this->client);
+    }
 }
