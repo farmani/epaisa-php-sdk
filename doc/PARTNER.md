@@ -91,3 +91,101 @@ try {
 ```
 `$options` is an array and should contain all mandatory and optional fields you need to call `/partner/merchant/product` api.
 please refer to REST api documentation to find more information about it.
+``` php
+Array
+(
+    [success] => 1
+    [response] => Array
+        (
+            [Products] => Array
+                (
+                    [0] => Array
+                        (
+                            [productDisplayName] => Test Product Name
+                            [productDescription] => a shor description to explain product details.
+                            [storeLocationId] => 2298
+                            [categories] => Array
+                                (
+                                    [0] => Uncategorized
+                                )
+
+                            [manufacturers] => Array
+                                (
+                                )
+
+                            [distributors] => Array
+                                (
+                                )
+
+                            [isAddon] => 
+                            [attributes] => Array
+                                (
+                                )
+
+                            [taxes] => Array
+                                (
+                                )
+
+                            [merchantId] => 2784
+                            [updatedUserId] => 2734
+                            [createdUserId] => 2734
+                            [storeLocationCaption] => Headquarters
+                            [created_at] => 1499749769
+                            [updated_at] => 1499749769
+                            [status] => 1
+                            [productName] => headquarters_test_product_name
+                            [productId] => 59645d891d41c80b3c59eb63
+                            [storeLocation] => Headquarters
+                            [variants] => Array
+                                (
+                                    [0] => Array
+                                        (
+                                            [name] => 
+                                            [upc] => 
+                                            [sku] => spt-12345
+                                            [sellingPrice] => 150
+                                            [buyingPrice] => 140
+                                            [mrp] => 160
+                                            [discount] => 5
+                                            [discountType] => %
+                                            [inventory] => 0
+                                            [threshold] => 0
+                                            [productId] => 59645d891d41c80b3c59eb63
+                                            [merchantId] => 2784
+                                            [createdUserId] => 2734
+                                            [updatedUserId] => 2734
+                                            [created_at] => 1499749769
+                                            [updated_at] => 1499749769
+                                            [status] => 1
+                                            [variantId] => 59645d891d41c80b3c59eb64
+                                        )
+
+                                )
+
+                            [parentCategories] => Array
+                                (
+                                    [0] => Array
+                                        (
+                                            [productCategoryId] => 1346
+                                            [parentProductCategoryId] => 
+                                            [productCategoryName] => Uncategorized
+                                            [status] => 1
+                                            [createdUserId] => 2734
+                                            [updatedUserId] => 2734
+                                            [created_at] => 1499749769
+                                            [updated_at] => 1499749769
+                                            [merchantId] => 2784
+                                            [productCategoryColor] => #FFFFFF
+                                        )
+
+                                )
+
+                        )
+
+                )
+
+            [total] => 1
+        )
+
+)
+```
