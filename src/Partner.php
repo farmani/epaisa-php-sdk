@@ -34,7 +34,7 @@ class Partner
      * @param array $options
      * @return array
      */
-    public function products($options = [])
+    public function product($options = [])
     {
         return $this->client->send('/partner/merchant/product', 'get', $options);
     }
@@ -43,7 +43,7 @@ class Partner
      * @param array $options
      * @return array
      */
-    public function merchants($options = [])
+    public function merchant($options = [])
     {
         return $this->client->send('/partner/merchant', 'get', $options);
     }

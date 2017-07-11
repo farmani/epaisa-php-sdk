@@ -238,7 +238,7 @@ class Request
     }
 
     protected function getAuthKey() {
-        if(empty($_SESSION['authKey'])) {
+        if(empty($_SESSION['authKey']) || $_SESSION['authKey_created_at']+899 < time()) {
             $authKey = $this->login();
         } else {
             $authKey = $_SESSION['authKey'];
