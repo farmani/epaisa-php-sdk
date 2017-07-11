@@ -7,6 +7,7 @@ ePaisa PHP SDK provide you different object to communicate with ePaisa 2.0 REST 
 try {
     $ePaisa = new \eigitallabs\ePaisa\ePaisa('TOKEN');
     $payment = $ePaisa->createPartner();
+    $options = ['merchantIds' => [4353,6545]];
     $result = $payment->merchants($options);
     print_r($result);
 } catch (\eigitallabs\ePaisa\Exception\ePaisaException $ex) {
