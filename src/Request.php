@@ -54,11 +54,12 @@ class Request
             $this->client = new Client([
                 'base_uri' => $_ENV['API_URL'],
                 'timeout'  => 100,
-                'headers' => [
+                'headers'  => [
                     'Content-Type' => 'application/json',
                 ]
-                ]);
-            defined('SESSION_ENC_KEY') or define('SESSION_ENC_KEY', 'def00000c196c56c35c837c8ac30d976e2f1b5008a07cfa583452b59e8ec54120a896e642a21cf');
+            ]);
+            defined('SESSION_ENC_KEY') or define('SESSION_ENC_KEY',
+                'def00000c196c56c35c837c8ac30d976e2f1b5008a07cfa583452b59e8ec54120a896e642a21cf');
             $session = new SessionHandler(SESSION_ENC_KEY);
             session_set_save_handler($session, true);
             $session->sessionStart();
@@ -91,9 +92,10 @@ class Request
      * @param $withAuthKey
      * @return array
      */
-    public function send($rout, $verb, $data, $withAuthKey=true)
+    public function send($rout, $verb, $data, $withAuthKey = true)
     {
-        return (strtoupper($verb) === 'GET')?$this->sendGet($rout, $data,$withAuthKey):$this->sendPost($rout, $verb, $data,$withAuthKey);
+        return (strtoupper($verb) === 'GET') ? $this->sendGet($rout, $data, $withAuthKey) :
+            $this->sendPost($rout, $verb, $data, $withAuthKey);
     }
 
     /**
@@ -103,9 +105,9 @@ class Request
      * @return array
      * @throws ePaisaException
      */
-    public function sendGet($rout, $data,$withAuthKey=true)
+    public function sendGet($rout, $data, $withAuthKey = true)
     {
-        if($withAuthKey) {
+        if ($withAuthKey) {
             $payload = $this->getAuthKey() . "####" . json_encode($data);
         } else {
             $payload = json_encode($data);
@@ -114,7 +116,7 @@ class Request
             $response = $this->client->request('GET', $rout, [
                 'query' => [
                     'clientId'      => $_ENV['CLIENT_ID'],
-                    'requestParams' => $this->prepare($this->getAuthKey() . "####" . json_encode($data)),
+                    'requestParams' => $this->prepare($payload),
                 ]
             ]);
             if ($response->getStatusCode() == 200) {
@@ -151,9 +153,9 @@ class Request
      * @return array
      * @throws ePaisaException
      */
-    public function sendPost($rout, $verb, $data,$withAuthKey=true)
+    public function sendPost($rout, $verb, $data, $withAuthKey = true)
     {
-        if($withAuthKey) {
+        if ($withAuthKey) {
             $payload = $this->getAuthKey() . "####" . json_encode($data);
         } else {
             $payload = json_encode($data);
@@ -162,7 +164,7 @@ class Request
             $response = $this->client->request(strtoupper($verb), $rout, [
                 'form_params' => [
                     'clientId'      => $_ENV['CLIENT_ID'],
-                    'requestParams' => $this->prepare($this->getAuthKey() . "####" . json_encode($data)),
+                    'requestParams' => $this->prepare($payload),
                 ]
             ]);
             if ($response->getStatusCode() == 200) {
@@ -272,8 +274,9 @@ class Request
         }
     }
 
-    protected function getAuthKey() {
-        if(empty($_SESSION['authKey']) || $_SESSION['authKey_created_at']+899 < time()) {
+    protected function getAuthKey()
+    {
+        if (empty($_SESSION['authKey']) || $_SESSION['authKey_created_at'] + 899 < time()) {
             $authKey = $this->login();
         } else {
             $authKey = $_SESSION['authKey'];
