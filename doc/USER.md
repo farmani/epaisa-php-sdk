@@ -8,12 +8,13 @@ try {
     $ePaisa = new \eigitallabs\ePaisa\ePaisa('TOKEN');
     $payment = $ePaisa->createUser();
     $options = [
-        'UserFirstName' => 'Ramin'
-        'UserLastName' => 'Farmani'
-        'Username' => 'a_test_email@gmail.com'
-        'Password' => 1qaz3edc%TGB
-        'UserMobileNumber' => '+91123456789'
-        'CountryCode' => 'IN'
+        'UserFirstName' => 'Ramin',
+        'UserLastName' => 'Farmani',
+        'Username' => 'a_test_email@gmail.com',
+        'Password' => '1qaz3edc%TGB',
+        'UserMobileNumber' => '+91123456789',
+        'CountryCode' => 'IN',
+        'CompanyPANCode => '',
         'parentMerchantId' => 472
     ];
     $result = $payment->register($options);
