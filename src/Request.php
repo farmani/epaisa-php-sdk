@@ -53,7 +53,7 @@ class Request
             $this->epaisa = $epaisa;
             $this->client = new Client([
                 'base_uri' => $_ENV['API_URL'],
-                'timeout'  => 10,
+                'timeout'  => 100,
                 'headers' => [
                     'Content-Type' => 'application/json',
                 ]
@@ -88,83 +88,107 @@ class Request
      * @param $rout
      * @param $verb
      * @param $data
+     * @param $withAuthKey
      * @return array
-     * @throws ePaisaException
      */
-    public function send($rout, $verb, $data)
+    public function send($rout, $verb, $data, $withAuthKey=true)
     {
-        return (strtoupper($verb) === 'GET')?$this->sendGet($rout, $data):$this->sendPost($rout, $verb, $data);
+        return (strtoupper($verb) === 'GET')?$this->sendGet($rout, $data,$withAuthKey):$this->sendPost($rout, $verb, $data,$withAuthKey);
     }
 
     /**
      * @param $rout
      * @param $data
+     * @param bool $withAuthKey
      * @return array
      * @throws ePaisaException
      */
-    public function sendGet($rout, $data)
+    public function sendGet($rout, $data,$withAuthKey=true)
     {
-        $response = $this->client->request('GET', $rout, [
-            'query' => [
-                'clientId'      => $_ENV['CLIENT_ID'],
-                'requestParams' => $this->prepare($this->getAuthKey() . "####" . json_encode($data)),
-            ]
-        ]);
-        if($response->getStatusCode() == 200) {
-            $result = (string)$response->getBody();
-            $resultArray = json_decode($result, true);
-            if(!empty($resultArray)) {
-                if (isset($resultArray['success']) && $resultArray['success'] == 1) {
-                    Log::debug("Operation completed successfully!");
-                    return $resultArray;
-                } else {
-                    Log::debug("Operation failed!");
-                    return $resultArray;
-                }
-            } else {
-                Log::error((string)$response->getBody());
-                throw new ePaisaException((string)$response->getBody());
-            }
+        if($withAuthKey) {
+            $payload = $this->getAuthKey() . "####" . json_encode($data);
+        } else {
+            $payload = json_encode($data);
         }
+        try {
+            $response = $this->client->request('GET', $rout, [
+                'query' => [
+                    'clientId'      => $_ENV['CLIENT_ID'],
+                    'requestParams' => $this->prepare($this->getAuthKey() . "####" . json_encode($data)),
+                ]
+            ]);
+            if ($response->getStatusCode() == 200) {
+                $result = (string)$response->getBody();
+                $resultArray = json_decode($result, true);
+                if (!empty($resultArray)) {
+                    if (isset($resultArray['success']) && $resultArray['success'] == 1) {
+                        Log::debug("Operation completed successfully!");
 
-        Log::error((string)$response->getBody());
-        throw new ePaisaException('Sending request failed with ' . $response->getStatusCode() . ' status code.');
+                        return $resultArray;
+                    } else {
+                        Log::debug("Operation failed!");
+
+                        return $resultArray;
+                    }
+                } else {
+                    Log::error((string)$response->getBody());
+                    throw new ePaisaException((string)$response->getBody());
+                }
+            }
+            Log::error((string)$response->getBody());
+            throw new ePaisaException('Sending request failed with ' . $response->getStatusCode() . ' status code.');
+        } catch (\Exception $e) {
+            Log::error((string)$e->getMessage());
+            throw new ePaisaException($e->getMessage());
+        }
     }
 
     /**
      * @param $rout
      * @param $verb
      * @param $data
+     * @param bool $withAuthKey
      * @return array
      * @throws ePaisaException
      */
-    public function sendPost($rout, $verb, $data)
+    public function sendPost($rout, $verb, $data,$withAuthKey=true)
     {
-        $response = $this->client->request(strtoupper($verb), $rout, [
-            'form_params' => [
-                'clientId'      => $_ENV['CLIENT_ID'],
-                'requestParams' => $this->prepare($this->getAuthKey() . "####" . json_encode($data)),
-            ]
-        ]);
-        if($response->getStatusCode() == 200) {
-            $result = (string)$response->getBody();
-            $resultArray = json_decode($result, true);
-            if(!empty($resultArray)) {
-                if (isset($resultArray['success']) && $resultArray['success'] == 1) {
-                    Log::debug("Operation completed successfully!");
-                    return $resultArray;
-                } else {
-                    Log::debug("Operation failed!");
-                    return $resultArray;
-                }
-            } else {
-                Log::error((string)$response->getBody());
-                throw new ePaisaException((string)$response->getBody());
-            }
+        if($withAuthKey) {
+            $payload = $this->getAuthKey() . "####" . json_encode($data);
+        } else {
+            $payload = json_encode($data);
         }
+        try {
+            $response = $this->client->request(strtoupper($verb), $rout, [
+                'form_params' => [
+                    'clientId'      => $_ENV['CLIENT_ID'],
+                    'requestParams' => $this->prepare($this->getAuthKey() . "####" . json_encode($data)),
+                ]
+            ]);
+            if ($response->getStatusCode() == 200) {
+                $result = (string)$response->getBody();
+                $resultArray = json_decode($result, true);
+                if (!empty($resultArray)) {
+                    if (isset($resultArray['success']) && $resultArray['success'] == 1) {
+                        Log::debug("Operation completed successfully!");
 
-        Log::error((string)$response->getBody());
-        throw new ePaisaException('Sending request failed with ' . $response->getStatusCode() . ' status code.');
+                        return $resultArray;
+                    } else {
+                        Log::debug("Operation failed!");
+
+                        return $resultArray;
+                    }
+                } else {
+                    Log::error((string)$response->getBody());
+                    throw new ePaisaException((string)$response->getBody());
+                }
+            }
+            Log::error((string)$response->getBody());
+            throw new ePaisaException('Sending request failed with ' . $response->getStatusCode() . ' status code.');
+        } catch (\Exception $e) {
+            Log::error((string)$e->getMessage());
+            throw new ePaisaException($e->getMessage());
+        }
     }
 
     /**
@@ -176,31 +200,38 @@ class Request
      */
     public function sendOld($rout, $verb, $data)
     {
-        $response = $this->client->request(strtoupper($verb), $rout, [
-            'form_params' => [
-                'clientId'      => $_ENV['CLIENT_ID'],
-                'requestParams' => $this->prepare($this->getAuthKey() . "####" . implode('####',$data)),
-            ]
-        ]);
-        if($response->getStatusCode() == 200) {
-            $result = (string)$response->getBody();
-            $resultArray = json_decode($result, true);
-            if(!empty($resultArray)) {
-                if (isset($resultArray['success']) && $resultArray['success'] == 1) {
-                    Log::debug("Operation completed successfully!");
-                    return $resultArray;
-                } else {
-                    Log::debug("Operation failed!");
-                    return $resultArray;
-                }
-            } else {
-                Log::error((string)$response->getBody());
-                throw new ePaisaException((string)$response->getBody());
-            }
-        }
+        try {
+            $response = $this->client->request(strtoupper($verb), $rout, [
+                'form_params' => [
+                    'clientId'      => $_ENV['CLIENT_ID'],
+                    'requestParams' => $this->prepare($this->getAuthKey() . "####" . implode('####', $data)),
+                ]
+            ]);
+            if ($response->getStatusCode() == 200) {
+                $result = (string)$response->getBody();
+                $resultArray = json_decode($result, true);
+                if (!empty($resultArray)) {
+                    if (isset($resultArray['success']) && $resultArray['success'] == 1) {
+                        Log::debug("Operation completed successfully!");
 
-        Log::error((string)$response->getBody());
-        throw new ePaisaException('Sending request failed with ' . $response->getStatusCode() . ' status code.');
+                        return $resultArray;
+                    } else {
+                        Log::debug("Operation failed!");
+
+                        return $resultArray;
+                    }
+                } else {
+                    Log::error((string)$response->getBody());
+                    throw new ePaisaException((string)$response->getBody());
+                }
+            }
+
+            Log::error((string)$response->getBody());
+            throw new ePaisaException('Sending request failed with ' . $response->getStatusCode() . ' status code.');
+        } catch (\Exception $e) {
+            Log::error((string)$e->getMessage());
+            throw new ePaisaException($e->getMessage());
+        }
     }
 
 
@@ -210,31 +241,35 @@ class Request
      */
     public function login()
     {
+        try {
+            $response = $this->client->request('POST', '/user/login-with-token', [
+                'form_params' => [
+                    'clientId'      => $_ENV['CLIENT_ID'],
+                    'requestParams' => $this->prepare(json_encode(['token' => $this->epaisa->token])),
+                ]
+            ]);
+            if ($response->getStatusCode() == 200) {
+                $result = (string)$response->getBody();
+                $resultArray = json_decode($result, true);
+                if (!empty($resultArray)) {
+                    if (isset($resultArray['success']) && $resultArray['success'] == 1) {
+                        Log::debug("Login completed successfully!");
+                        $_SESSION['authKey'] = $resultArray['response']['auth_key'];
+                        $_SESSION['authKey_created_at'] = $resultArray['response']['auth_key_creationtime'];
 
-        $response = $this->client->request('POST', '/user/login-with-token', [
-            'form_params' => [
-                'clientId'      => $_ENV['CLIENT_ID'],
-                'requestParams' => $this->prepare(json_encode(['token'=>$this->epaisa->token])),
-            ]
-        ]);
-        if($response->getStatusCode() == 200) {
-            $result = (string)$response->getBody();
-            $resultArray = json_decode($result, true);
-            if(!empty($resultArray)) {
-                if (isset($resultArray['success']) && $resultArray['success'] == 1) {
-                    Log::debug("Login completed successfully!");
-                    $_SESSION['authKey'] = $resultArray['response']['auth_key'];
-                    $_SESSION['authKey_created_at'] = $resultArray['response']['auth_key_creationtime'];
-                    return $resultArray['response']['auth_key'];
+                        return $resultArray['response']['auth_key'];
+                    }
+                } else {
+                    Log::error((string)$response->getBody());
+                    throw new ePaisaException((string)$response->getBody());
                 }
-            } else {
-                Log::error((string)$response->getBody());
-                throw new ePaisaException((string)$response->getBody());
             }
+            Log::error((string)$response->getBody());
+            throw new ePaisaException('Sending request failed with ' . $response->getStatusCode() . ' status code.');
+        } catch (\Exception $e) {
+            Log::error((string)$e->getMessage());
+            throw new ePaisaException($e->getMessage());
         }
-
-        Log::error((string)$response->getBody());
-        throw new ePaisaException('Sending request failed with ' . $response->getStatusCode() . ' status code.');
     }
 
     protected function getAuthKey() {

@@ -36,6 +36,6 @@ class User
      */
     public function register($options = [])
     {
-        return $this->client->send('/user/register', 'post', $options);
+        return $this->client->send('/user/register', 'post', $options, false);
     }
 }
