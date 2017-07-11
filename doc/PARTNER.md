@@ -84,6 +84,10 @@ Array
 try {
     $ePaisa = new \eigitallabs\ePaisa\ePaisa('TOKEN');
     $payment = $ePaisa->createPartner();
+    $options = [
+        'merchantId' => 4353,
+        'productId' => '59645d891d41c80b3c59eb63'
+    ];
     $result = $payment->products($options);
     print_r($result);
 } catch (\eigitallabs\ePaisa\Exception\ePaisaException $ex) {
