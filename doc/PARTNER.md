@@ -2,6 +2,10 @@
 
 ePaisa PHP SDK provide you different object to communicate with ePaisa 2.0 REST API.
 
+* [List of merchants](https://github.com/eigitallabs/epaisa-php-sdk/blob/master/doc/PARTNER.md#list-of-merchants)
+  * [$options parameters for List of merchants](https://github.com/eigitallabs/epaisa-php-sdk/blob/master/doc/PARTNER.md#options-parameters) 
+* [List of products](https://github.com/eigitallabs/epaisa-php-sdk/blob/master/doc/PARTNER.md#get-a-list-of-merchants-products)
+  * [$options parameters for List of products](https://github.com/eigitallabs/epaisa-php-sdk/blob/master/doc/PARTNER.md#options-parameters-1) 
 ## List of merchants
 ``` php
 try {
@@ -64,7 +68,7 @@ Array
 
 )
 ```
-## get a list of merchant's products
+## List of products
 ``` php
 try {
     $ePaisa = new \eigitallabs\ePaisa\ePaisa('TOKEN');
