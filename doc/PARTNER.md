@@ -1,10 +1,10 @@
 # Partner Module
 
-ePaisa PHP SDK provide you different object to communicate with ePaisa 2.0 REST API.
+ePaisa PHP SDK provide you different object to communicate with ePaisa 2.0 Partner Module REST API.
 
 * [List of merchants](https://github.com/eigitallabs/epaisa-php-sdk/blob/master/doc/PARTNER.md#list-of-merchants)
   * [$options parameters for List of merchants](https://github.com/eigitallabs/epaisa-php-sdk/blob/master/doc/PARTNER.md#options-parameters) 
-* [List of products](https://github.com/eigitallabs/epaisa-php-sdk/blob/master/doc/PARTNER.md#get-a-list-of-merchants-products)
+* [List of products](https://github.com/eigitallabs/epaisa-php-sdk/blob/master/doc/PARTNER.md#list-of-products)
   * [$options parameters for List of products](https://github.com/eigitallabs/epaisa-php-sdk/blob/master/doc/PARTNER.md#options-parameters-1) 
 ## List of merchants
 ``` php
