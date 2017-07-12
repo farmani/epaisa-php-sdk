@@ -20,63 +20,41 @@ please refer to REST api documentation to find more information about it.
 ``` php
 Array
 (
-    [Merchants] => Array
+    [success] => 1
+    [response] => Array
         (
-            [0] => Array
+            [Merchants] => Array
                 (
-                    [merchantId] => 2734
-                    [parentId] => 472
-                    [planId] => 1
-                    [businessTypeId] => 0
-                    [countryCode] => IN
-                    [stateId] => 0
-                    [cityId] => 0
-                    [areaId] => 0
-                    [merchantCompanyName] => test999
-                    [merchantPANCode] => 
-                    [merchantYearlyRevenue] => 0
-                    [merchantAllowedUser] => 1
-                    [merchantTransactionStatus] => ACTIVE
-                    [merchantSignupSource] => 
-                    [createdUserId] => 0
-                    [updatedUserId] => 0
-                    [created_at] => 1489496907
-                    [updated_at] => 1489496907
-                    [status] => 1
-                    [planExpiryDate] => 
-                    [industryId] => 
-                    [categoryId] => 
+                    [0] => Array
+                        (
+                            [merchantId] => 4353
+                            [address] =>  
+                            [cityName] => 
+                            [stateName] => 
+                            [pincode] => 
+                            [merchantCompanyName] => test999
+                            [status] => 
+                            [email] => test@133.com
+                            [mobile] => +919887884898
+                        )
+
+                    [1] => Array
+                        (
+                            [merchantId] => 6545
+                            [address] =>  
+                            [cityName] => Mumbai
+                            [stateName] => Maharashtra
+                            [pincode] => 
+                            [merchantCompanyName] => ePaisa
+                            [status] => 
+                            [email] => mrfarmani@gmail.com
+                            [mobile] => 989153023376
+                        )
                 )
 
-            [1] => Array
-                (
-                    [merchantId] => 2807
-                    [parentId] => 472
-                    [planId] => 1
-                    [businessTypeId] => 6
-                    [countryCode] => 
-                    [stateId] => 0
-                    [cityId] => 0
-                    [areaId] => 0
-                    [merchantCompanyName] => 34343
-                    [merchantPANCode] => 
-                    [merchantYearlyRevenue] => 0
-                    [merchantAllowedUser] => 1
-                    [merchantTransactionStatus] => ACTIVE
-                    [merchantSignupSource] => 
-                    [createdUserId] => 0
-                    [updatedUserId] => 0
-                    [created_at] => 1493967496
-                    [updated_at] => 1493967533
-                    [status] => 1
-                    [planExpiryDate] => 
-                    [industryId] => 2
-                    [categoryId] => 
-                )
-                
+            [total] => 2
         )
 
-    [total] => 2
 )
 ```
 ### get a list of merchant's products
@@ -106,41 +84,10 @@ Array
                 (
                     [0] => Array
                         (
-                            [productDisplayName] => Test Product Name
-                            [productDescription] => a shor description to explain product details.
-                            [storeLocationId] => 2298
-                            [categories] => Array
-                                (
-                                    [0] => Uncategorized
-                                )
-
-                            [manufacturers] => Array
-                                (
-                                )
-
-                            [distributors] => Array
-                                (
-                                )
-
-                            [isAddon] => 
-                            [attributes] => Array
-                                (
-                                )
-
-                            [taxes] => Array
-                                (
-                                )
-
-                            [merchantId] => 2784
-                            [updatedUserId] => 2734
-                            [createdUserId] => 2734
-                            [storeLocationCaption] => Headquarters
-                            [created_at] => 1499749769
-                            [updated_at] => 1499749769
-                            [status] => 1
-                            [productName] => headquarters_test_product_name
+                            [productName] => Test Product Name
+                            [description] => a shor description to explain product details.
                             [productId] => 59645d891d41c80b3c59eb63
-                            [storeLocation] => Headquarters
+                            [imageUrl] => Test Product Name
                             [variants] => Array
                                 (
                                     [0] => Array
@@ -167,22 +114,12 @@ Array
 
                                 )
 
-                            [parentCategories] => Array
+                            [taxes] => Array
                                 (
-                                    [0] => Array
-                                        (
-                                            [productCategoryId] => 1346
-                                            [parentProductCategoryId] => 
-                                            [productCategoryName] => Uncategorized
-                                            [status] => 1
-                                            [createdUserId] => 2734
-                                            [updatedUserId] => 2734
-                                            [created_at] => 1499749769
-                                            [updated_at] => 1499749769
-                                            [merchantId] => 2784
-                                            [productCategoryColor] => #FFFFFF
-                                        )
+                                )
 
+                            [manufacturers] => Array
+                                (
                                 )
 
                         )

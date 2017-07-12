@@ -27,6 +27,7 @@ class Request
      * @var \GuzzleHttp\Client
      */
     private $client;
+    private $session;
     /**
      * Available actions to send
      *
@@ -60,9 +61,9 @@ class Request
             ]);
             defined('SESSION_ENC_KEY') or define('SESSION_ENC_KEY',
                 'def00000c196c56c35c837c8ac30d976e2f1b5008a07cfa583452b59e8ec54120a896e642a21cf');
-            $session = new SessionHandler(SESSION_ENC_KEY);
-            session_set_save_handler($session, true);
-            $session->sessionStart();
+            $this->session = new SessionHandler(SESSION_ENC_KEY);
+            session_set_save_handler($this->session, true);
+            $this->session->sessionStart();
         } else {
             throw new ePaisaException('ePaisa pointer is empty!');
         }
@@ -277,6 +278,8 @@ class Request
     protected function getAuthKey()
     {
         if (empty($_SESSION['authKey']) || $_SESSION['authKey_created_at'] + 899 < time()) {
+            $this->session->sessionEnd();
+            $this->session->sessionStart();
             $authKey = $this->login();
         } else {
             $authKey = $_SESSION['authKey'];
