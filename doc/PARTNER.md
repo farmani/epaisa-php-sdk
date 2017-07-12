@@ -14,7 +14,7 @@ try {
     echo $ex->getMessage();
 }
 ```
-`$options` is an array and should contain all mandatory and optional fields you need to call `/partner/merchant` api.
+`$options` is an array and should contain all mandatory and optional fields you need to call `/v2.0/partner/merchant` api.
 please refer to REST api documentation to find more information about it.
 
 ### $options parameters
@@ -79,7 +79,7 @@ try {
     echo $ex->getMessage();
 }
 ```
-`$options` is an array and should contain all mandatory and optional fields you need to call `/partner/merchant/product` api.
+`$options` is an array and should contain all mandatory and optional fields you need to call `/v2.0/partner/merchant/product` api.
 please refer to REST api documentation to find more information about it.
 
 ### $options parameters
