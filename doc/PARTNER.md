@@ -17,16 +17,11 @@ try {
 `$options` is an array and should contain all mandatory and optional fields you need to call `/partner/merchant` api.
 please refer to REST api documentation to find more information about it.
 
-**merchantId** - **_Integer_** fetch a specific merchant information. <u>Optional</u>
-
-**merchantIds** - **_Array of Integer_** fetch a list of specific merchants. <u>Optional</u>
-
-**updated_at** - **_Integer_** to reduce response size or number of request you can send updated_at values which is most recent updated_at values you received in your previous requests, we will filter merchants which has some new changes after this timestamp value. <u>Optional</u>
-
-**limit** - **_Integer_** number of item in result list. <u>Optional</u>
-
-**offset** - **_Integer_** offset of item in result list. <u>Optional</u>
-
+<p><b><i>merchantId</i></b> - <i>Integer</i> fetch a specific merchant information. <u>Optional</u></p>
+<p><b><i>merchantIds</i></b> - <i>Array of Integer</i> fetch a list of specific merchants. <u>Optional</u></p>
+<p><b><i>updated_at</i></b> - <i>Integer</i> to reduce response size or number of request you can send updated_at values which is most recent updated_at values you received in your previous requests, we will filter merchants which has some new changes after this timestamp value. <u>Optional</u></p>
+<p><b><i>limit</i></b> - <i>Integer</i> number of item in result list. <u>Optional</u></p>
+<p><b><i>offset</i></b> - <i>Integer</i> offset of item in result list. <u>Optional</u></p>
 ``` php
 Array
 (
