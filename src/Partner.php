@@ -36,7 +36,7 @@ class Partner
      */
     public function product($options = [])
     {
-        return $this->client->send('/partner/merchant/product', 'get', $options);
+        return $this->client->send('/v2.0/partner/merchant/product', 'get', $options);
     }
 
     /**
@@ -45,7 +45,7 @@ class Partner
      */
     public function merchant($options = [])
     {
-        return $this->client->send('/partner/merchant', 'get', $options);
+        return $this->client->send('/v2.0/partner/merchant', 'get', $options);
     }
 
 }
