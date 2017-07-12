@@ -1,5 +1,6 @@
-# ePaisa PHP SDK
+# ![ePaisa PHP SDK][logo] ePaisa PHP SDK
 
+[logo]: https://www.epaisa.com/email/epaisa_logo_main_70x70.png "ePaisa PHP SDK"
 [![Latest Version on Packagist][ico-version]][link-packagist]
 [![Software License][ico-license]](LICENSE.md)
 [![Build Status][ico-travis]][link-travis]
