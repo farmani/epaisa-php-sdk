@@ -1,8 +1,8 @@
-## Partner
+# Partner Module
 
 ePaisa PHP SDK provide you different object to communicate with ePaisa 2.0 REST API.
 
-### List of merchants
+## List of merchants
 ``` php
 try {
     $ePaisa = new \eigitallabs\ePaisa\ePaisa('TOKEN');
@@ -16,6 +16,8 @@ try {
 ```
 `$options` is an array and should contain all mandatory and optional fields you need to call `/partner/merchant` api.
 please refer to REST api documentation to find more information about it.
+
+### $options parameters
 * <p><b><i>merchantId</i></b> - <i>Integer</i> fetch a specific merchant information. <u>Optional</u></p>
 * <p><b><i>merchantIds</i></b> - <i>Array of Integer</i> fetch a list of specific merchants. <u>Optional</u></p>
 * <p><b><i>updated_at</i></b> - <i>Integer</i> to reduce response size or number of request you can send updated_at values which is most recent updated_at values you received in your previous requests, we will filter merchants which has some new changes after this timestamp value. <u>Optional</u></p>
@@ -62,7 +64,7 @@ Array
 
 )
 ```
-### get a list of merchant's products
+## get a list of merchant's products
 ``` php
 try {
     $ePaisa = new \eigitallabs\ePaisa\ePaisa('TOKEN');
@@ -80,7 +82,7 @@ try {
 `$options` is an array and should contain all mandatory and optional fields you need to call `/partner/merchant/product` api.
 please refer to REST api documentation to find more information about it.
 
-#### $options parameters
+### $options parameters
 * <p><b><i>merchantId</i></b> - <i>Integer</i> if you want to fetch all products under a specific merchant you can set merchantId. <u>Optional</u></p>
 * <p><b><i>merchantIds</i></b> - <i>Array of Integers</i> if you want to fetch all products under a some merchants you can set merchantIds. <u>Optional</u></p>
 * <p><b><i>productId</i></b> - <i>String</i> if you want to fetch a product under a specific merchant you can set productId and merchantId. <u>Optional</u></p>
