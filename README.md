@@ -66,7 +66,7 @@ Please see [CONTRIBUTING](CONTRIBUTING.md) and [CONDUCT](CONDUCT.md) for details
 
 ## Security
 
-If you discover any security related issues, please email ramin.farmani@eigital.com instead of using the issue tracker.
+If you discover any security related issues, please email ramin.farmani@eigital.in instead of using the issue tracker.
 
 ## Credits
 
